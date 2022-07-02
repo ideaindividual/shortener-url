@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('/create_user', 'App\Http\Controllers\AuthenticationController@create_user');
-Route::get('/auth', 'App\Http\Controllers\AuthenticationController@auth');
+Route::post('/auth', 'App\Http\Controllers\AuthenticationController@auth');
 Route::get('/frequently_visited_url', 'App\Http\Controllers\UrlShortenerController@frequently_visited_url');
 Route::get('/track_urls', 'App\Http\Controllers\UrlShortenerController@track_urls');
 Route::get('/get_urls', 'App\Http\Controllers\UrlShortenerController@track_urls');

@@ -48,6 +48,10 @@ class UrlShortenerController extends Controller
             $page = file_get_contents($url->to_url);
             $title = preg_match('/<title[^>]*>(.*?)<\/title>/ims', $page, $match) ? $match[1] : null;
 
+            $url_data = UrlData::where('url_shortened_id', $url->id)->get();
+
+            if(sizeof($url_data)>0) die('Ya existe');
+
             UrlData::create([
 
                 'url_shortened_id' => $url->id,
@@ -55,7 +59,7 @@ class UrlShortenerController extends Controller
 
             ]);
 
-            echo $title;
+            return resonse()->json($title);
         }
 
     }
@@ -64,6 +68,7 @@ class UrlShortenerController extends Controller
     public function frequently_visited_url(){
 
         $urls = DB::table('url_shorteners')
+                          ->join('url_data', 'url_shorteners.id', '=', 'url_data.url_shortened_id')
                           ->orderBy('views_count', 'desc')
                           ->limit(100)
                           ->get();

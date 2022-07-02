@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     {
 
         DB::table('users')->insert([
-            'email' => 'mater',
+            'email' => 'master',
             'password' => Hash::make('url_shortener_master')
 
         ]);

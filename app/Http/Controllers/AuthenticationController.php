@@ -24,13 +24,14 @@ class AuthenticationController extends Controller
     // Method for user authentication
     public function auth(Request $auth_data) {
 
-        if (isset($auth_data->all()[0])) {
-            $data = json_decode($auth_data->all()[0]);
-            $user = User::where('email', $data->email)->first();
+        $data = $auth_data->all();
+        
+        if (isset($data)) {
+            $user = User::where('email', $data['email'])->first();
 
-            if ($user && $user->email == $data->email) {
+            if ($user && $user->email == $data['email']) {
 
-                if (Hash::check($data->password, $user->password)) {
+                if (Hash::check($data['password'], $user->password)) {
 
                     $api_sec = Authentication::where('user_id', $user->id)->first();
 
@@ -45,14 +46,13 @@ class AuthenticationController extends Controller
                     return response()->json(['token', $api_sec->api_key]);
                 } else {
 
-                    error_log("Contraseña incorrecta");
+                    return response()->json("Contraseña incorrecta");
                 }
             } else {
-                error_log("Usuario no existe");
+                return response()->json("Usuario no existe");
             }
         } else {
-            echo 'No autorizado.';
-            error_log('no autorizado para usar la api');
+            return response()->json('no autorizado para usar la api');
         }
     }
 }
